@@ -1,0 +1,37 @@
+box: wercker/default
+
+build:
+    steps:
+        - shellcheck
+
+        - script:
+            name: config
+            code: |
+                export KUBERNETES_VERSION="0.17.0"
+                export KUBERNETES_MD5="f759664e6548c4efc56079f15b81c1a0"
+                export KUBERNETES_SHA1="d2b9ffa4497ffe795edb0e20fdd52b80d65d1b33"
+                echo "Installing version $KUBERNETES_VERSION of kubernetes"
+
+        - script:
+            name: fetch kubernetes archive
+            code: |
+                curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v${KUBERNETES_VERSION}/kubernetes.tar.gz > /tmp/kubernetes.tar.gz
+
+        - script:
+            name: validate kubernetes archive
+            code: |
+                cat /tmp/kubernetes.tar.gz | sha1sum | grep -q "$KUBERNETES_SHA1"
+                cat /tmp/kubernetes.tar.gz | md5sum | grep -q "$KUBERNETES_MD5"
+
+        - script:
+            name: extract kubernetes archive
+            code: |
+                mkdir /tmp/kubernetes/
+                tar xzvf /tmp/kubernetes.tar.gz -C /tmp/kubernetes/
+
+        - script:
+            name: prepare output
+            code: |
+                cp "$WERCKER_ROOT/LICENSE" "$WERCKER_ROOT/README.md" "$WERCKER_ROOT/run.sh" "$WERCKER_ROOT/wercker.yml" "$WERCKER_OUTPUT_DIR"
+                cp /tmp/kubernetes/kubernetes/platforms/linux/amd64/kubectl "$WERCKER_OUTPUT_DIR/kubectl"
+
