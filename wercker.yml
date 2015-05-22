@@ -1,5 +1,4 @@
 box: wercker/default
-
 build:
     steps:
         - shellcheck
@@ -7,9 +6,9 @@ build:
         - script:
             name: config
             code: |
-                export KUBERNETES_VERSION="0.17.0"
-                export KUBERNETES_MD5="f759664e6548c4efc56079f15b81c1a0"
-                export KUBERNETES_SHA1="d2b9ffa4497ffe795edb0e20fdd52b80d65d1b33"
+                export KUBERNETES_VERSION="0.17.1"
+                export KUBERNETES_MD5="e7f7da8f15377cfb5ff6e004dfb382f7"
+                export KUBERNETES_SHA1="f3b0032a19ccf2b4df658d9bf31e87d8f4248b1a"
                 echo "Installing version $KUBERNETES_VERSION of kubernetes"
 
         - script:
@@ -32,6 +31,7 @@ build:
         - script:
             name: prepare output
             code: |
-                cp "$WERCKER_ROOT/LICENSE" "$WERCKER_ROOT/README.md" "$WERCKER_ROOT/run.sh" "$WERCKER_ROOT/wercker.yml" "$WERCKER_OUTPUT_DIR"
+                cp "$WERCKER_ROOT/LICENSE" "$WERCKER_ROOT/README.md" "$WERCKER_ROOT/run.sh" "$WERCKER_ROOT/wercker.yml" "$WERCKER_ROOT/wercker-step.yml" "$WERCKER_OUTPUT_DIR"
                 cp /tmp/kubernetes/kubernetes/platforms/linux/amd64/kubectl "$WERCKER_OUTPUT_DIR/kubectl"
+                chmod ugo+rx "$WERCKER_OUTPUT_DIR/kubectl"
 
