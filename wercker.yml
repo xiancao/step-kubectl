@@ -6,15 +6,15 @@ build:
         - script:
             name: config
             code: |
-                export KUBERNETES_VERSION="0.17.1"
-                export KUBERNETES_MD5="e7f7da8f15377cfb5ff6e004dfb382f7"
-                export KUBERNETES_SHA1="f3b0032a19ccf2b4df658d9bf31e87d8f4248b1a"
+                export KUBERNETES_VERSION="1.0.6"
+                export KUBERNETES_MD5="a9e46f18ffd67602619cd2f88472c71a"
+                export KUBERNETES_SHA1="289f9a11ea2f3cfcc6cbd50d29c3d16d4978b76c"
                 echo "Installing version $KUBERNETES_VERSION of kubernetes"
 
         - script:
             name: fetch kubernetes archive
             code: |
-                curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v${KUBERNETES_VERSION}/kubernetes.tar.gz > /tmp/kubernetes.tar.gz
+                curl -L https://github.com/kubernetes/kubernetes/releases/download/v${KUBERNETES_VERSION}/kubernetes.tar.gz > /tmp/kubernetes.tar.gz
 
         - script:
             name: validate kubernetes archive
