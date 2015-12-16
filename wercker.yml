@@ -6,9 +6,9 @@ build:
         - script:
             name: config
             code: |
-                export KUBERNETES_VERSION="1.0.6"
-                export KUBERNETES_MD5="a9e46f18ffd67602619cd2f88472c71a"
-                export KUBERNETES_SHA1="289f9a11ea2f3cfcc6cbd50d29c3d16d4978b76c"
+                export KUBERNETES_VERSION="1.1.3"
+                export KUBERNETES_MD5="78a5314657faaa8ee256af3bc5ba790c"
+                export KUBERNETES_SHA1="69b98da1b4e4a06362a71b1ff1783670bc2dbd13"
                 echo "Installing version $KUBERNETES_VERSION of kubernetes"
 
         - script:
