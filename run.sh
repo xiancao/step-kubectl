@@ -37,6 +37,18 @@ main() {
   if [ -n "$WERCKER_KUBECTL_INSECURE_SKIP_TLS_VERIFY" ]; then
     global_args="$global_args --insecure-skip-tls-verify=\"$WERCKER_KUBECTL_INSECURE_SKIP_TLS_VERIFY\""
   fi
+    # certificate-authority
+  if [ -n "$WERCKER_KUBECTL_CERTIFICATE_AUTHORITY" ]; then
+    global_args="$global_args --certificate-authority=\"$WERCKER_KUBECTL_CERTIFICATE_AUTHORITY\""
+  fi
+    # client-certificate
+  if [ -n "$WERCKER_KUBECTL_CLIENT_CERTIFICATE" ]; then
+    global_args="$global_args --client-certificate=\"$WERCKER_KUBECTL_CLIENT_CERTIFICATE\""
+  fi
+    # client-key
+  if [ -n "$WERCKER_KUBECTL_CLIENT_KEY" ]; then
+    global_args="$global_args --client-key=\"$WERCKER_KUBECTL_CLIENT_KEY\""
+  fi
 
   # Command specific flags
   local args
