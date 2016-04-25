@@ -17,6 +17,15 @@ properties:
   server:
     type: string
     required: false
+  certificate-authority:
+    type: string
+    required: false
+  client-certificate:
+    type: string
+    required: false
+  client-key:
+    type: string
+    required: false
   insecure-skip-tls-verify:
     type: string
     required: false
@@ -83,6 +92,7 @@ properties:
   overwrite:
     type: string
     required: false
+
   debug:
     type: string
     required: false
