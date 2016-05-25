@@ -169,7 +169,7 @@ main() {
 
 display_version() {
   info "Running kubectl version:"
-  "$WERCKER_STEP_ROOT"/kubectl version -c
+  "$WERCKER_STEP_ROOT"/kubectl version --client
   echo ""
 }
 
