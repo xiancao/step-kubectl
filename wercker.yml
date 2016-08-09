@@ -21,9 +21,17 @@ build:
                 cat /tmp/kubectl| sha256sum | grep -q "$KUBERNETES_SHA256"
 
         - script:
+            name: install upx
+            code: |
+                sudo apt-get update
+                sudo apt-get install upx-ucl
+
+        - script:
             name: prepare output
             code: |
                 cp "$WERCKER_ROOT/LICENSE" "$WERCKER_ROOT/README.md" "$WERCKER_ROOT/run.sh" "$WERCKER_ROOT/wercker.yml" "$WERCKER_ROOT/wercker-step.yml" "$WERCKER_OUTPUT_DIR"
                 cp /tmp/kubectl "$WERCKER_OUTPUT_DIR/kubectl"
                 chmod ugo+rx "$WERCKER_OUTPUT_DIR/kubectl"
 
+                strip "$WERCKER_OUTPUT_DIR/kubectl"
+                upx --lzma --best "$WERCKER_OUTPUT_DIR/kubectl"
