@@ -64,6 +64,10 @@ The MIT License (MIT)
 
 # Changelog
 
+## 3.0.0
+
+- Update to kubectl to version `1.3.4`
+
 ## 2.1.0
 
 - Add `certificate-authority`, `client-certificate`, `client-key`
