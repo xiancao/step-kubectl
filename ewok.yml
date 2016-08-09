@@ -1,7 +1,12 @@
-box: wercker/default
 build:
+    box:
+      id: alpine
+      cmd: /bin/sh
     steps:
-        - shellcheck
+       # - shellcheck
+        - script:
+            name: install apk packages
+            code: apk update && apk add ca-certificates openssh curl
 
         - script:
             name: config
@@ -15,16 +20,11 @@ build:
             code: |
                 curl -L https://storage.googleapis.com/kubernetes-release/release/v${KUBERNETES_VERSION}/bin/linux/amd64/kubectl > $WERCKER_OUTPUT_DIR/kubectl
 
+
         - script:
             name: validate kubernetes archive
             code: |
                 cat $WERCKER_OUTPUT_DIR/kubectl| sha256sum | grep -q "$KUBERNETES_SHA256"
-
-        - script:
-            name: install upx
-            code: |
-                sudo apt-get update
-                sudo apt-get install upx-ucl
 
         - script:
             name: prepare output
@@ -32,5 +32,33 @@ build:
                 cp "$WERCKER_ROOT/LICENSE" "$WERCKER_ROOT/README.md" "$WERCKER_ROOT/run.sh" "$WERCKER_ROOT/wercker.yml" "$WERCKER_ROOT/wercker-step.yml" "$WERCKER_OUTPUT_DIR"
                 chmod ugo+rx "$WERCKER_OUTPUT_DIR/kubectl"
 
-                strip "$WERCKER_OUTPUT_DIR/kubectl"
-                upx --lzma --best "$WERCKER_OUTPUT_DIR/kubectl"
+test-busybox:
+    box:
+      id: busybox
+      cmd: /bin/sh
+    steps:
+      - script:
+          code: |
+              export WERCKER_KUBECTL_COMMAND="version --client"
+              export WERCKER_STEP_ROOT=$WERCKER_SOURCE_DIR
+              source run.sh
+
+test-alpine:
+    box:
+      id: alpine
+      cmd: /bin/sh
+    steps:
+      - script:
+          code: |
+              export WERCKER_KUBECTL_COMMAND="version --client"
+              export WERCKER_STEP_ROOT=$WERCKER_SOURCE_DIR
+              source run.sh
+
+test-debian:
+    box: debian
+    steps:
+      - script:
+          code: |
+              export WERCKER_KUBECTL_COMMAND="version --client"
+              export WERCKER_STEP_ROOT=$WERCKER_SOURCE_DIR
+              source run.sh
