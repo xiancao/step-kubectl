@@ -1,5 +1,7 @@
 #!/bin/sh
 
+kubectl="$WERCKER_STEP_ROOT/kubectl"
+
 main() {
   display_version
 
@@ -7,11 +9,12 @@ main() {
     fail "wercker-kubectl: command argument cannot be empty"
   fi
 
-  local cmd="$WERCKER_KUBECTL_COMMAND"
+  cmd="$WERCKER_KUBECTL_COMMAND"
 
   # Global args
-  local global_args
-  local raw_global_args="$WERCKER_KUBECTL_RAW_GLOBAL_ARGS"
+  #global_args
+  global_args=
+  raw_global_args="$WERCKER_KUBECTL_RAW_GLOBAL_ARGS"
 
   # token
   if [ -n "$WERCKER_KUBECTL_TOKEN" ]; then
@@ -51,8 +54,8 @@ main() {
   fi
 
   # Command specific flags
-  local args
-  local raw_args="$WERCKER_KUBECTL_RAW_ARGS"
+  args=
+  raw_args="$WERCKER_KUBECTL_RAW_ARGS"
 
   # file
   if [ -n "$WERCKER_KUBECTL_FILE" ]; then
@@ -159,17 +162,18 @@ main() {
     args="$args --overwrite=\"$WERCKER_KUBECTL_OVERWRITE\""
   fi
 
+
   info "Running kubctl command"
   if [ "$WERCKER_KUBECTL_DEBUG" = "true" ]; then
     info "kubectl $global_args $raw_global_args $cmd $args $raw_args"
   fi
 
-  eval "$WERCKER_STEP_ROOT"/kubectl "$global_args" "$raw_global_args" "$cmd" "$args" "$raw_args"
+  eval "$kubectl" "$global_args" "$raw_global_args" "$cmd" "$args" "$raw_args"
 }
 
 display_version() {
   info "Running kubectl version:"
-  "$WERCKER_STEP_ROOT"/kubectl version --client
+  "$kubectl" version --client
   echo ""
 }
 

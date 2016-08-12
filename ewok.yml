@@ -1,7 +1,12 @@
-box: wercker/default
 build:
+    box:
+      id: alpine
+      cmd: /bin/sh
     steps:
-        - shellcheck
+       # - shellcheck
+        - script:
+            name: install apk packages
+            code: apk update && apk add ca-certificates openssh curl
 
         - script:
             name: config
@@ -15,6 +20,7 @@ build:
             code: |
                 curl -L https://storage.googleapis.com/kubernetes-release/release/v${KUBERNETES_VERSION}/bin/linux/amd64/kubectl > $WERCKER_OUTPUT_DIR/kubectl
 
+
         - script:
             name: validate kubernetes archive
             code: |
@@ -25,3 +31,34 @@ build:
             code: |
                 cp "$WERCKER_ROOT/LICENSE" "$WERCKER_ROOT/README.md" "$WERCKER_ROOT/run.sh" "$WERCKER_ROOT/wercker.yml" "$WERCKER_ROOT/wercker-step.yml" "$WERCKER_OUTPUT_DIR"
                 chmod ugo+rx "$WERCKER_OUTPUT_DIR/kubectl"
+
+test-busybox:
+    box:
+      id: busybox
+      cmd: /bin/sh
+    steps:
+      - script:
+          code: |
+              export WERCKER_KUBECTL_COMMAND="version --client"
+              export WERCKER_STEP_ROOT=$WERCKER_SOURCE_DIR
+              source run.sh
+
+test-alpine:
+    box:
+      id: alpine
+      cmd: /bin/sh
+    steps:
+      - script:
+          code: |
+              export WERCKER_KUBECTL_COMMAND="version --client"
+              export WERCKER_STEP_ROOT=$WERCKER_SOURCE_DIR
+              source run.sh
+
+test-debian:
+    box: debian
+    steps:
+      - script:
+          code: |
+              export WERCKER_KUBECTL_COMMAND="version --client"
+              export WERCKER_STEP_ROOT=$WERCKER_SOURCE_DIR
+              source run.sh
