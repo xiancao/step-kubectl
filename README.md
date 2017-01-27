@@ -45,7 +45,7 @@ directly to the `kubectl` command. See the `kubectl` for the documentation.
 
 If a flag is not available, use the `raw-global-args` or the `raw-args` option.
 
-# Example
+# Example 
 
 ```
 deploy:
